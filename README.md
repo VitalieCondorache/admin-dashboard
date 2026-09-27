@@ -6,6 +6,7 @@ Angular 21 admin dashboard — standalone components, signals, zoneless change d
 
 [![Live demo](https://img.shields.io/badge/demo-live-brightgreen)](https://vitaliecondorache.github.io/admin-dashboard/)
 [![CI](https://github.com/VitalieCondorache/admin-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/VitalieCondorache/admin-dashboard/actions/workflows/ci.yml)
+[![Deploy to GitHub Pages](https://github.com/VitalieCondorache/admin-dashboard/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/VitalieCondorache/admin-dashboard/actions/workflows/deploy-pages.yml)
 ![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind-3-38BDF8?logo=tailwindcss&logoColor=white)
