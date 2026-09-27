@@ -29,7 +29,8 @@
     "test": "ng test",
     "test:coverage": "ng test --coverage",
     "lint": "eslint \"src/**/*.{ts,html}\"",
-    "format": "prettier --write \"src/**/*.{ts,html,scss,json}\""
+    "format": "prettier --write \"src/**/*.{ts,html,scss,json}\"",
+    "build:pages": "ng build --configuration=production --base-href /admin-dashboard/"
   },
   "private": true,
   "packageManager": "npm@10.9.2",

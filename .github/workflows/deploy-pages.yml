@@ -1,0 +1,77 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow the workflow to publish to Pages via OIDC, and to read the repo.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deployments at once; let an in-flight one finish so the
+# environment is not left half-published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Verify · Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      # Gate the deploy on the same checks CI runs, so a red commit can
+      # never reach the published site.
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Unit tests
+        run: npm test -- --watch=false
+
+      # Project pages are served from https://<owner>.github.io/<repo>/, so the
+      # build needs a matching base href. Change this to "/" if you move the app
+      # to a user/org root page or to a custom domain.
+      - name: Build
+        run: npm run build -- --configuration=production --base-href /admin-dashboard/
+
+      # GitHub Pages is a static host with no rewrite rules, so a deep link such
+      # as /admin-dashboard/users would 404 on refresh. Serving the app shell as
+      # 404.html lets the client-side router take over. .nojekyll keeps Pages
+      # from doing anything clever with the artifact.
+      - name: Add SPA fallback and .nojekyll
+        run: |
+          cp dist/admin-dashboard/browser/index.html dist/admin-dashboard/browser/404.html
+          touch dist/admin-dashboard/browser/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/admin-dashboard/browser
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

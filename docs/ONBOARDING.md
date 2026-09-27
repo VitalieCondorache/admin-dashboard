@@ -380,6 +380,11 @@ Log in with `admin@demo.com / admin123`. All data is mocked — try creating a u
 npm run build                # outputs to dist/
 ```
 
+### Deploy
+The app is published to GitHub Pages by [`.github/workflows/deploy-pages.yml`](../.github/workflows/deploy-pages.yml) on every push to `main`. Project pages are served from a sub-path, so that build passes `--base-href /admin-dashboard/` (locally: `npm run build:pages`) and copies the built `index.html` to `404.html`, because Pages has no rewrite rules and a direct hit on `/admin-dashboard/users` would otherwise 404.
+
+The practical consequence: **runtime asset paths must stay relative.** A leading slash resolves against the domain root and 404s under `/admin-dashboard/`. See the comment in [transloco-loader.ts](../src/app/core/i18n/transloco-loader.ts) for the one place this mattered — `/api/*` is unaffected because `mockApiInterceptor` answers before the request reaches the network.
+
 ---
 
 ## 14. Common tasks — how to…

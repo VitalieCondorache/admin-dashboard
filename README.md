@@ -2,8 +2,9 @@
 
 Angular 21 admin dashboard — standalone components, signals, zoneless change detection, and a self-contained mock backend so the whole thing runs with a single `npm start`.
 
-> **Demo credentials:** `admin@demo.com` / `admin123`
+> **Live demo:** <https://vitaliecondorache.github.io/admin-dashboard/> · **Demo credentials:** `admin@demo.com` / `admin123`
 
+[![Live demo](https://img.shields.io/badge/demo-live-brightgreen)](https://vitaliecondorache.github.io/admin-dashboard/)
 [![CI](https://github.com/VitalieCondorache/admin-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/VitalieCondorache/admin-dashboard/actions/workflows/ci.yml)
 ![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
@@ -98,6 +99,7 @@ Open <http://localhost:4200>. The app boots straight into the login page — sig
 | ----------------------- | -------------------------------------------- |
 | `npm start`             | Dev server on port 4200 with live reload     |
 | `npm run build`         | Production build (output in `dist/`)         |
+| `npm run build:pages`   | Production build with the Pages base href    |
 | `npm test`              | Vitest unit suite                            |
 | `npm run test:coverage` | Vitest with V8 coverage report (`coverage/`) |
 | `npm run lint`          | ESLint over `src/`                           |
@@ -106,6 +108,19 @@ Open <http://localhost:4200>. The app boots straight into the login page — sig
 ### Environment
 
 The app talks to `/api`, which is intercepted by the mock layer. To point at a real backend later, copy `.env.example` to `.env` and override `NG_APP_API_BASE_URL`.
+
+### Deployment
+
+The app is published to GitHub Pages by [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) on every push to `main`:
+
+**<https://vitaliecondorache.github.io/admin-dashboard/>**
+
+Because the mock layer answers `/api/*` inside the browser, a static host is all this project needs — no server, no database. Two details make the sub-path deploy work:
+
+- **`--base-href /admin-dashboard/`** — project pages are served from `/<repo>/`, so the build is made with a matching base href (also available locally as `npm run build:pages`). Every runtime asset path is relative, so the same code still works at `/` during `npm start`. If you rename the repository, deploy at a domain root, or attach a custom domain, update that value in the workflow and in the `build:pages` script.
+- **`404.html`** — Pages has no rewrite rules, so hitting `/admin-dashboard/users` directly would 404. The workflow copies the built `index.html` to `404.html`, which boots the app shell and lets the client-side router resolve the deep link.
+
+> Pages is disabled by default. Enable it once under **Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the workflow.
 
 ## Project structure quick map
 
