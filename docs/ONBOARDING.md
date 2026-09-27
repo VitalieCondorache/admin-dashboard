@@ -40,7 +40,6 @@ Key libraries from [package.json](../package.json):
 | `tailwindcss` | Utility-first CSS classes (`flex`, `gap-4`, `text-sm`, …). |
 | `rxjs` | Reactive streams — used for HTTP, form value changes, etc. |
 | `vitest` + `@vitest/coverage-v8` | Unit test runner and coverage. |
-| `msw` | (dev) Mock Service Worker — available if we ever want browser-level mocks. |
 
 ---
 
@@ -103,10 +102,12 @@ Angular 17+ replaces `*ngIf`/`*ngFor` with built-in blocks:
 ```
 
 ### 3.6 HTTP interceptors
-Functions that can read/modify every HTTP request and response. Registered in [app.config.ts](../src/app/app.config.ts) via `withInterceptors([...])`. We have three, and **order matters**:
-1. `mockApiInterceptor` — returns fake data before the request leaves the app.
-2. `authInterceptor` — attaches `Authorization: Bearer <token>`.
-3. `errorInterceptor` — catches 401/403/5xx globally.
+Functions that can read/modify every HTTP request and response. Registered in [app.config.ts](../src/app/app.config.ts) via `withInterceptors([...])`. We have three, and **order matters** — they run in registration order on the way *out*, and in reverse on the way *back in*:
+1. `authInterceptor` — attaches `Authorization: Bearer <token>` to outgoing requests.
+2. `errorInterceptor` — wraps everything registered after it, so it also catches failures coming from the mock layer.
+3. `mockApiInterceptor` — the fake "backend". It is registered **last** so it sits at the end of the chain and answers the request there, like a real server would.
+
+The net effect is that the real cross-cutting concerns (auth, error handling) sit *on top of* the fake backend instead of underneath it, so a `401` returned by the mock is handled exactly like a real one.
 
 ### 3.7 Router guards
 Functions returning `boolean | UrlTree`. If they return `false` or a `UrlTree`, navigation is blocked/redirected.
@@ -153,7 +154,7 @@ Root standalone component. Its template is just `<router-outlet />` — the rout
 ### [src/app/app.config.ts](../src/app/app.config.ts)
 Central place that wires up all application-wide providers:
 - `provideRouter(routes, withComponentInputBinding(), withViewTransitions())` — enables routing. `withComponentInputBinding()` maps route params to `@Input()` automatically. `withViewTransitions()` enables the View Transitions API for smoother page changes.
-- `provideHttpClient(withInterceptors([mockApiInterceptor, authInterceptor, errorInterceptor]))` — enables `HttpClient` with the three interceptors.
+- `provideHttpClient(withInterceptors([authInterceptor, errorInterceptor, mockApiInterceptor]))` — enables `HttpClient` with the three interceptors. `mockApiInterceptor` is deliberately **last**: it plays the role of the remote server at the end of the chain, so the auth and error layers wrap it exactly as they would wrap a real backend.
 - `provideAnimationsAsync()` — lazy-loads Angular animations (needed by Material).
 - `provideCharts(withDefaultRegisterables())` — registers all chart.js types.
 - `provideTransloco({...})` — configures translations (available languages `en`/`ro`, default `en`, custom HTTP loader).
@@ -180,10 +181,11 @@ Defines the URL structure. Every feature is **lazy-loaded** via `loadComponent`,
 Everything that is not a page but is used across the app.
 
 ### 6.1 `core/auth/`
-- **[auth.service.ts](../src/app/core/auth/auth.service.ts)** — `AuthService` holds the current user and tokens as signals, persists them to `localStorage`, and exposes `login()`, `logout()`, `refresh()`. This is the single source of truth for "is the user logged in?".
-- **[auth.guards.ts](../src/app/core/auth/auth.guards.ts)** — two functional guards:
+- **[auth.service.ts](../src/app/core/auth/auth.service.ts)** — `AuthService` keeps the session (`user` + `tokens`) in a single `signal`, restores it from `localStorage` on construction, and persists it on login. Public API: `login(payload)`, `logout()`, `hasRole(...roles)`, plus the computed signals `user`, `isAuthenticated`, `accessToken` and `role`. This is the single source of truth for "is the user logged in?".
+- **[auth.guards.ts](../src/app/core/auth/auth.guards.ts)** — three functional guards:
   - `authGuard`: blocks access when not logged in, redirects to `/auth/login`.
   - `guestGuard`: blocks access to `/auth/login` when already logged in, redirects to `/`.
+  - `roleGuard(...roles)`: factory that blocks access when the signed-in user does not hold one of the given roles, redirecting to `/forbidden`. It is unit-tested, but **not wired to any route yet** — `app.routes.ts` imports only `authGuard` and `guestGuard`, and there is currently no `/forbidden` route, so add one before using it.
 
 ### 6.2 `core/http/`
 - **[auth.interceptor.ts](../src/app/core/http/auth.interceptor.ts)** — adds the `Authorization: Bearer <access-token>` header to every outgoing request if the user is signed in.
@@ -326,15 +328,15 @@ All tests live next to the code they test, suffixed with `.spec.ts`.
 
 ### How to run
 ```bash
-# one-shot run (CI mode)
-CI=1 npx ng test --watch=false
+# one-shot run (exactly what CI does)
+npm test -- --watch=false
 
 # watch mode (re-runs on file change)
 npm test
 ```
 
 ### Status
-103 tests passing. Coverage: **~93% statements, ~87% branches, ~96% lines**.
+104 tests passing across 23 spec files. Coverage: **93.4% statements, 86.3% branches, 96.4% lines** (`npm run test:coverage`).
 
 ### Important test helper
 [src/testing/transloco-testing.ts](../src/testing/transloco-testing.ts) exposes:

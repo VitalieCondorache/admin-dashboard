@@ -69,7 +69,7 @@ src/app/
 │   └── services/   # ThemeService
 ├── shared/ui/      # presentational primitives (ConfirmDialog, Placeholder)
 ├── layouts/        # DashboardLayout (sidebar + topbar shell)
-└── features/       # lazy-loaded route bundles
+└── features/       # pages, all lazily loaded via loadComponent
     ├── auth/       # login (Reactive Forms)
     ├── dashboard/  # KPI cards + charts + recent orders
     ├── users/      # CRUD with NgRx Signal Store + MatTable
@@ -83,8 +83,10 @@ The interceptor pipeline is wired in [`app.config.ts`](src/app/app.config.ts) as
 
 ## Getting started
 
+Requires Node `^20.19.0 || ^22.12.0 || >=24.0.0` — the range Angular 21 declares (`engines` in [`package.json`](package.json)). A CI-matching version is pinned in [`.nvmrc`](.nvmrc), so `nvm use` is enough.
+
 ```bash
-npm install --legacy-peer-deps
+npm install
 npm start
 ```
 
@@ -94,7 +96,7 @@ Open <http://localhost:4200>. The app boots straight into the login page — sig
 
 | Command                 | What it does                                 |
 | ----------------------- | -------------------------------------------- |
-| `npm start`             | Dev server on port 4200 with HMR             |
+| `npm start`             | Dev server on port 4200 with live reload     |
 | `npm run build`         | Production build (output in `dist/`)         |
 | `npm test`              | Vitest unit suite                            |
 | `npm run test:coverage` | Vitest with V8 coverage report (`coverage/`) |
@@ -111,13 +113,13 @@ The app talks to `/api`, which is intercepted by the mock layer. To point at a r
 - **Auth flow:** [`AuthService`](src/app/core/auth/auth.service.ts) + [`auth.guards.ts`](src/app/core/auth/auth.guards.ts) + [`auth.interceptor.ts`](src/app/core/http/auth.interceptor.ts).
 - **Mock API:** [`mock-api.interceptor.ts`](src/app/core/mock/mock-api.interceptor.ts) covers auth, paginated `/api/users`, products, orders, analytics and dashboard stats. Seed data lives in [`seed.ts`](src/app/core/mock/seed.ts).
 - **State example:** [`features/users/users.store.ts`](src/app/features/users/users.store.ts) is the canonical example of a Signal Store + `rxMethod` CRUD flow.
-- **Tests:** colocated `.spec.ts` files. See [`features/users/users.component.spec.ts`](src/app/features/users/users.component.spec.ts) for a representative integration-style test.
+- **Tests:** colocated `.spec.ts` files. See [`features/users/users.component.spec.ts`](src/app/features/users/users.component.spec.ts) for a representative integration-style test. Shared test helpers live in [`src/testing/`](src/testing/transloco-testing.ts) — `provideTranslocoTesting()` supplies a stub Transloco loader that any spec rendering the `transloco` pipe needs.
 
 A longer architectural walkthrough lives in [docs/ONBOARDING.md](docs/ONBOARDING.md).
 
 ## Development notes
 
-- The repository uses `legacy-peer-deps=true` (see [`.npmrc`](.npmrc)) because some Material 21 packages still publish loose peer ranges.
+- The repository sets `legacy-peer-deps=true` in [`.npmrc`](.npmrc), so a plain `npm install` is enough — no extra CLI flags. Some Material 21 packages still publish loose peer ranges.
 - Signals + zoneless mean change detection runs only when a signal changes or an event fires — avoid pushing imperative state into components; reach for a signal or a Signal Store method instead.
 - All user-facing strings go through Transloco. Add new keys to both [`en.json`](public/assets/i18n/en.json) and [`ro.json`](public/assets/i18n/ro.json).
 

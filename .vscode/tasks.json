@@ -30,10 +30,10 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": {
-            "regexp": "Changes detected"
+            "regexp": "Building\\.\\.\\."
           },
           "endsPattern": {
-            "regexp": "bundle generation (complete|failed)"
+            "regexp": "(Waiting for file changes|Tests\\s+\\d+ (passed|failed))"
           }
         }
       }

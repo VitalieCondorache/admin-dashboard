@@ -49,6 +49,16 @@ describe('LanguageService', () => {
     expect(localStorage.getItem('admin.lang')).toBe('ro');
   });
 
+  it('mirrors the active language onto <html lang>', () => {
+    const svc = TestBed.inject(LanguageService);
+
+    svc.set('ro');
+    expect(document.documentElement.lang).toBe('ro');
+
+    svc.set('en');
+    expect(document.documentElement.lang).toBe('en');
+  });
+
   it('restores stored language on construction', () => {
     localStorage.setItem('admin.lang', 'ro');
     // new injector with stored value

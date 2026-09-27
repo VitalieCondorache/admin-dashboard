@@ -22,9 +22,12 @@ export class LanguageService {
       this.transloco.setActiveLang(stored);
     }
 
-    this.transloco.langChanges$
-      .pipe(takeUntilDestroyed())
-      .subscribe((lang) => this._current.set(lang));
+    this.transloco.langChanges$.pipe(takeUntilDestroyed()).subscribe((lang) => {
+      this._current.set(lang);
+      // Mirror the active language onto <html lang> so assistive tech,
+      // hyphenation and the browser spellchecker follow the UI language.
+      document.documentElement.lang = lang;
+    });
   }
 
   set(lang: string): void {

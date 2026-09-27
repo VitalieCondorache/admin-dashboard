@@ -1,0 +1,15 @@
+# Normalize all text files to LF in the repository, regardless of the OS.
+* text=auto eol=lf
+
+# Binary assets — never diff or normalize these.
+*.webp binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+
+# Lockfile is generated; collapse it in GitHub's diff view.
+package-lock.json linguist-generated=true

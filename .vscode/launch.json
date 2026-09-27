@@ -3,18 +3,27 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
+      "name": "ng serve (Chrome)",
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: start",
       "url": "http://localhost:4200/"
     },
     {
-      "name": "ng test",
-      "type": "chrome",
+      // Vitest runs in Node, not in the browser — there is no Karma/jasmine
+      // debug page. Launch the runner in a terminal instead.
+      "name": "ng test (Vitest, watch)",
+      "type": "node-terminal",
       "request": "launch",
-      "preLaunchTask": "npm: test",
-      "url": "http://localhost:9876/debug.html"
+      "command": "npm test",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "ng test (Vitest, single run)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm test -- --watch=false",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
