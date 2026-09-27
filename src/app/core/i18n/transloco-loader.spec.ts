@@ -18,9 +18,9 @@ describe('TranslocoHttpLoader', () => {
 
   afterEach(() => http.verify());
 
-  it('requests /assets/i18n/<lang>.json', async () => {
+  it('requests assets/i18n/<lang>.json relative to <base href>', async () => {
     const p = firstValueFrom(loader.getTranslation('ro'));
-    const req = http.expectOne('/assets/i18n/ro.json');
+    const req = http.expectOne('assets/i18n/ro.json');
     expect(req.request.method).toBe('GET');
     req.flush({ hello: 'salut' });
     await expect(p).resolves.toEqual({ hello: 'salut' });
