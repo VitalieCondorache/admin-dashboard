@@ -1,9 +1,17 @@
 {
   "name": "admin-dashboard",
   "version": "0.1.0",
-  "description": "Angular 21 admin dashboard with signals, NgRx Signal Store, Tailwind, Transloco i18n and a self-contained mock API.",
-  "author": "Vitalie",
+  "description": "Angular 21 admin dashboard — signals, NgRx Signal Store, Tailwind + Material 3, Transloco i18n, and a built-in mock API so it runs with zero backend.",
+  "author": "Vitalie Condorache <vitalie.condor@gmail.com> (https://github.com/VitalieCondorache)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VitalieCondorache/admin-dashboard.git"
+  },
+  "homepage": "https://github.com/VitalieCondorache/admin-dashboard#readme",
+  "bugs": {
+    "url": "https://github.com/VitalieCondorache/admin-dashboard/issues"
+  },
   "keywords": [
     "angular",
     "angular-21",
