@@ -4,6 +4,7 @@ Angular 21 admin dashboard — standalone components, signals, zoneless change d
 
 > **Demo credentials:** `admin@demo.com` / `admin123`
 
+[![CI](https://github.com/VitalieCondorache/admin-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/VitalieCondorache/admin-dashboard/actions/workflows/ci.yml)
 ![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind-3-38BDF8?logo=tailwindcss&logoColor=white)
@@ -16,25 +17,25 @@ Angular 21 admin dashboard — standalone components, signals, zoneless change d
 - **Strict TypeScript** — `strict`, `strictTemplates`, `noImplicitReturns`, `noPropertyAccessFromIndexSignature`.
 - **State management** — `@ngrx/signals` Signal Store (see [`UsersStore`](src/app/features/users/users.store.ts)) with computed selectors and `rxMethod`-driven async flows.
 - **Self-contained** — an HTTP interceptor ([`mockApiInterceptor`](src/app/core/mock/mock-api.interceptor.ts)) serves the entire `/api/*` surface from in-memory seed data with realistic latency, pagination, sorting and search.
-- **i18n** — Transloco with English + Romanian, runtime language switching, ~140 keys.
+- **i18n** — Transloco with English + Romanian, runtime language switching, 198 keys per language (full parity).
 - **Theming** — class-based dark mode, system-aware, persisted across reloads.
 - **Tested** — Vitest unit suite covering services, guards, interceptors, the signal store, dialogs and feature components (~93% statements / ~96% lines).
 - **CI** — GitHub Actions workflow runs lint, tests and a production build on every push and PR.
 
 ## Stack
 
-| Concern        | Choice                                       |
-| -------------- | -------------------------------------------- |
-| Framework      | Angular 21 (standalone, signals, zoneless)   |
-| State          | `@ngrx/signals` (Signal Store)               |
-| UI             | Angular Material + TailwindCSS 3             |
-| Charts         | Chart.js via `ng2-charts`                    |
-| Forms          | Reactive Forms                               |
-| HTTP           | `HttpClient` + functional interceptors       |
-| Routing        | Standalone routes + lazy loading             |
-| i18n           | `@jsverse/transloco`                         |
-| Tests          | Vitest + `@vitest/coverage-v8` + jsdom       |
-| Tooling        | ESLint, Prettier, EditorConfig               |
+| Concern   | Choice                                     |
+| --------- | ------------------------------------------ |
+| Framework | Angular 21 (standalone, signals, zoneless) |
+| State     | `@ngrx/signals` (Signal Store)             |
+| UI        | Angular Material + TailwindCSS 3           |
+| Charts    | Chart.js via `ng2-charts`                  |
+| Forms     | Reactive Forms                             |
+| HTTP      | `HttpClient` + functional interceptors     |
+| Routing   | Standalone routes + lazy loading           |
+| i18n      | `@jsverse/transloco`                       |
+| Tests     | Vitest + `@vitest/coverage-v8` + jsdom     |
+| Tooling   | ESLint, Prettier, EditorConfig             |
 
 ## Architecture
 
@@ -72,14 +73,14 @@ Open <http://localhost:4200>. The app boots straight into the login page — sig
 
 ### Available scripts
 
-| Command                 | What it does                                         |
-| ----------------------- | ---------------------------------------------------- |
-| `npm start`             | Dev server on port 4200 with HMR                     |
-| `npm run build`         | Production build (output in `dist/`)                 |
-| `npm test`              | Vitest unit suite                                    |
-| `npm run test:coverage` | Vitest with V8 coverage report (`coverage/`)         |
-| `npm run lint`          | ESLint over `src/`                                   |
-| `npm run format`        | Prettier write across the workspace                  |
+| Command                 | What it does                                 |
+| ----------------------- | -------------------------------------------- |
+| `npm start`             | Dev server on port 4200 with HMR             |
+| `npm run build`         | Production build (output in `dist/`)         |
+| `npm test`              | Vitest unit suite                            |
+| `npm run test:coverage` | Vitest with V8 coverage report (`coverage/`) |
+| `npm run lint`          | ESLint over `src/`                           |
+| `npm run format`        | Prettier write across the workspace          |
 
 ### Environment
 
