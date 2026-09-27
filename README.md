@@ -121,7 +121,7 @@ Because the mock layer answers `/api/*` inside the browser, a static host is all
 - **`--base-href /admin-dashboard/`** — project pages are served from `/<repo>/`, so the build is made with a matching base href (also available locally as `npm run build:pages`). Every runtime asset path is relative, so the same code still works at `/` during `npm start`. If you rename the repository, deploy at a domain root, or attach a custom domain, update that value in the workflow and in the `build:pages` script.
 - **`404.html`** — Pages has no rewrite rules, so hitting `/admin-dashboard/users` directly would 404. The workflow copies the built `index.html` to `404.html`, which boots the app shell and lets the client-side router resolve the deep link.
 
-> Pages is disabled by default. Enable it once under **Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the workflow.
+> Pages is off by default on a fresh repository — enabling it once under **Settings → Pages → Build and deployment → Source: GitHub Actions** is all it takes. It is already enabled for this repository, so a fork only needs that one setting.
 
 ## Project structure quick map
 
