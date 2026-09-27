@@ -1,0 +1,248 @@
+{
+  "common": {
+    "search": "Search",
+    "refresh": "Refresh",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "view": "View",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "signOut": "Sign out",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "welcomeBack": "Welcome back",
+    "profile": "Profile",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "noNotifications": "No new notifications",
+    "language": "Language",
+    "all": "All",
+    "status": "Status",
+    "category": "Category",
+    "date": "Date",
+    "total": "Total",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "enable": "Enable"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "products": "Products",
+    "orders": "Orders",
+    "analytics": "Analytics",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "title": "Overview",
+    "subtitle": "Key metrics and recent activity",
+    "lastUpdated": "Last updated just now",
+    "totalRevenue": "Total Revenue",
+    "activeUsers": "Active Users",
+    "newSignups": "New Signups",
+    "conversionRate": "Conversion Rate",
+    "vsLastMonth": "vs last month",
+    "revenue": "Revenue",
+    "revenueSubtitle": "Last 12 months (k $)",
+    "revenueLast12": "Revenue — last 12 months",
+    "usersByRole": "Users by role",
+    "rolesDistribution": "Distribution across roles",
+    "recentOrders": "Recent orders",
+    "latestTransactions": "Latest transactions",
+    "viewAll": "View all",
+    "order": "Order",
+    "customer": "Customer",
+    "amount": "Amount"
+  },
+  "users": {
+    "title": "Users",
+    "totalCount": "{{count}} total users",
+    "newUser": "New user",
+    "searchPlaceholder": "Search by name, email, role...",
+    "noUsersFound": "No users found",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "created": "Created"
+    },
+    "dialog": {
+      "createTitle": "Create new user",
+      "editTitle": "Edit user",
+      "fullName": "Full name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "createBtn": "Create user",
+      "saveBtn": "Save changes",
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email"
+    },
+    "roles": {
+      "admin": "Admin",
+      "manager": "Manager",
+      "user": "User"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending"
+    },
+    "deleteConfirm": {
+      "title": "Delete user?",
+      "message": "Are you sure you want to delete {{name}}? This action cannot be undone."
+    },
+    "created": "User created",
+    "updated": "User updated",
+    "deleted": "User deleted"
+  },
+  "products": {
+    "title": "Products",
+    "totalCount": "{{count}} products in catalog",
+    "newProduct": "New product",
+    "searchPlaceholder": "Search products, SKU, category...",
+    "category": "Category",
+    "allCategories": "All categories",
+    "status": "Status",
+    "allStatuses": "All statuses",
+    "noProducts": "No products found",
+    "tryAdjust": "Try adjusting your filters",
+    "stock": "Stock:",
+    "units": "units",
+    "statuses": {
+      "published": "Published",
+      "draft": "Draft",
+      "archived": "Archived"
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "totalCount": "{{count}} total orders",
+    "export": "Export CSV",
+    "revenuePage": "Revenue (page)",
+    "pending": "Pending",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "searchPlaceholder": "Search order, customer, email...",
+    "columns": {
+      "order": "Order",
+      "customer": "Customer",
+      "items": "Items",
+      "payment": "Payment",
+      "total": "Total",
+      "status": "Status",
+      "date": "Date"
+    }
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Traffic and sales insights over the last 30 days",
+    "visitors": "Visitors",
+    "pageviews": "Pageviews",
+    "pagesSession": "Pages / Session",
+    "bounceRate": "Bounce rate",
+    "vsPrev": "vs prev",
+    "visitorsPageviews": "Visitors & Pageviews",
+    "last30": "Last 30 days",
+    "trafficSources": "Traffic sources",
+    "devices": "Devices",
+    "salesByCategory": "Sales by category",
+    "topCountries": "Top countries"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account, security and preferences",
+    "tabs": {
+      "profile": "Profile",
+      "security": "Security",
+      "notifications": "Notifications",
+      "appearance": "Appearance"
+    },
+    "profile": {
+      "changePhoto": "Change photo",
+      "photoHint": "PNG or JPG, max 2MB",
+      "fullName": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "timezone": "Timezone",
+      "language": "Language",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell us about yourself...",
+      "cancel": "Cancel",
+      "saveChanges": "Save changes"
+    },
+    "security": {
+      "changePassword": "Change password",
+      "changeHint": "Use a strong password you do not use elsewhere.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "minChars": "Minimum 8 characters",
+      "updatePassword": "Update password",
+      "twoFactor": "Two-factor authentication",
+      "twoFactorHint": "Add an extra layer of security to your account.",
+      "authApp": "Authenticator app",
+      "notConfigured": "Not configured",
+      "enable": "Enable"
+    },
+    "notifications": {
+      "email": "Email notifications",
+      "emailHint": "Choose which emails you want to receive.",
+      "marketing": "Marketing",
+      "marketingHint": "Product tips & special offers",
+      "productUpdates": "Product updates",
+      "productUpdatesHint": "New features and releases",
+      "security": "Security alerts",
+      "securityHint": "Login activity and 2FA prompts",
+      "push": "Push notifications",
+      "pushHint": "Real-time alerts on your devices.",
+      "desktop": "Desktop",
+      "desktopHint": "Browser notifications",
+      "newOrders": "New orders",
+      "newOrdersHint": "Ping when orders come in",
+      "weeklyDigest": "Weekly digest",
+      "weeklyDigestHint": "Summary every Monday",
+      "savePreferences": "Save preferences"
+    },
+    "appearance": {
+      "theme": "Theme",
+      "themeHint": "Choose how Admin Suite looks to you.",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "savedMessage": "{{name}} saved successfully"
+  },
+  "auth": {
+    "appTitle": "Admin Suite",
+    "signInSubtitle": "Sign in to your account",
+    "email": "Email",
+    "password": "Password",
+    "emailInvalid": "Enter a valid email",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "passwordMin": "Minimum 6 characters",
+    "togglePassword": "Toggle password visibility",
+    "signIn": "Sign in",
+    "demoCreds": "Demo credentials:"
+  },
+  "confirm": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "placeholder": {
+    "comingSoon": "Coming soon",
+    "roadmap": "This section is part of the roadmap. Coming soon in the next iteration."
+  },
+  "layout": {
+    "upgradeTitle": "Upgrade to Pro",
+    "upgradeSubtitle": "Unlock all features",
+    "toggleSidebar": "Toggle sidebar"
+  }
+}

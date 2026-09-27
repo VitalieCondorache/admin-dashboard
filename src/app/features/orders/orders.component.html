@@ -1,0 +1,124 @@
+<div class="flex flex-col gap-5 sm:gap-6">
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">{{ 'orders.title' | transloco }}</h2>
+      <p class="text-sm opacity-70">{{ 'orders.totalCount' | transloco: { count: total() } }}</p>
+    </div>
+    <button mat-flat-button color="primary" class="!h-11">
+      <mat-icon>file_download</mat-icon><span>{{ 'orders.export' | transloco }}</span>
+    </button>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <div class="card p-4">
+      <p class="text-xs uppercase tracking-wider opacity-60">{{ 'orders.revenuePage' | transloco }}</p>
+      <p class="mt-1 text-xl sm:text-2xl font-semibold">${{ summary().revenue | number: '1.0-0' }}</p>
+    </div>
+    <div class="card p-4">
+      <p class="text-xs uppercase tracking-wider opacity-60 flex items-center gap-1">
+        <span class="h-2 w-2 rounded-full bg-amber-500"></span>{{ 'orders.pending' | transloco }}
+      </p>
+      <p class="mt-1 text-xl sm:text-2xl font-semibold">{{ summary().pending }}</p>
+    </div>
+    <div class="card p-4">
+      <p class="text-xs uppercase tracking-wider opacity-60 flex items-center gap-1">
+        <span class="h-2 w-2 rounded-full bg-indigo-500"></span>{{ 'orders.shipped' | transloco }}
+      </p>
+      <p class="mt-1 text-xl sm:text-2xl font-semibold">{{ summary().shipped }}</p>
+    </div>
+    <div class="card p-4">
+      <p class="text-xs uppercase tracking-wider opacity-60 flex items-center gap-1">
+        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>{{ 'orders.delivered' | transloco }}
+      </p>
+      <p class="mt-1 text-xl sm:text-2xl font-semibold">{{ summary().delivered }}</p>
+    </div>
+  </div>
+
+  <div class="card overflow-hidden">
+    <div class="flex flex-col sm:flex-row gap-3 p-4 border-b" style="border-color: var(--mat-sys-outline-variant);">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="flex-1">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput [formControl]="search" [placeholder]="'orders.searchPlaceholder' | transloco" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="sm:w-48">
+        <mat-label>{{ 'common.status' | transloco }}</mat-label>
+        <mat-select [formControl]="status">
+          <mat-option value="">{{ 'products.allStatuses' | transloco }}</mat-option>
+          @for (s of statuses; track s) {
+            <mat-option [value]="s" class="capitalize">{{ s }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+
+    <div class="overflow-x-auto">
+      <table mat-table [dataSource]="items()" class="w-full">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>{{ 'orders.columns.order' | transloco }}</th>
+          <td mat-cell *matCellDef="let o" class="font-semibold whitespace-nowrap">{{ o.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="customer">
+          <th mat-header-cell *matHeaderCellDef>{{ 'orders.columns.customer' | transloco }}</th>
+          <td mat-cell *matCellDef="let o">
+            <div class="flex flex-col">
+              <span class="font-medium whitespace-nowrap">{{ o.customer }}</span>
+              <span class="text-xs opacity-60 whitespace-nowrap">{{ o.email }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="items">
+          <th mat-header-cell *matHeaderCellDef>{{ 'orders.columns.items' | transloco }}</th>
+          <td mat-cell *matCellDef="let o">{{ o.items }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="payment">
+          <th mat-header-cell *matHeaderCellDef>{{ 'orders.columns.payment' | transloco }}</th>
+          <td mat-cell *matCellDef="let o">
+            <div class="flex items-center gap-1.5 capitalize">
+              <mat-icon class="!text-base !h-4 !w-4 opacity-70">{{ paymentIcon(o.paymentMethod) }}</mat-icon>
+              {{ o.paymentMethod }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>{{ 'orders.columns.total' | transloco }}</th>
+          <td mat-cell *matCellDef="let o" class="font-semibold whitespace-nowrap">${{ o.total | number: '1.2-2' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>{{ 'orders.columns.status' | transloco }}</th>
+          <td mat-cell *matCellDef="let o">
+            <span class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold capitalize" [ngClass]="statusBadge(o.status)">
+              {{ o.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>{{ 'orders.columns.date' | transloco }}</th>
+          <td mat-cell *matCellDef="let o" class="opacity-70 whitespace-nowrap">{{ o.createdAt | date: 'short' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayed"></tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [length]="total()"
+      [pageSize]="pageSize()"
+      [pageIndex]="page()"
+      [pageSizeOptions]="[10, 25, 50]"
+      (page)="onPage($event)"
+      showFirstLastButtons
+    />
+  </div>
+</div>

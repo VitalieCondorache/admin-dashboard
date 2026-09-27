@@ -1,0 +1,86 @@
+// Include theming for Angular Material with `mat.theme()`.
+@use '@angular/material' as mat;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  height: 100%;
+  color-scheme: light;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100%;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--mat-sys-outline-variant);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mat-sys-outline);
+}
+
+// Reset links so router navigation looks clean
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+
+// Utility card class reused in templates
+.card {
+  background: var(--mat-sys-surface);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 200ms, transform 200ms;
+}
+.card--hover:hover {
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+// Material overrides — cleaner form fields
+.mat-mdc-form-field-subscript-wrapper {
+  padding: 0 !important;
+}
+
+// Ensure dark mode text stays readable on Tailwind utilities
+html.dark .bg-emerald-100 { background-color: rgba(16, 185, 129, 0.15); color: rgb(110, 231, 183); }
+html.dark .bg-amber-100 { background-color: rgba(245, 158, 11, 0.15); color: rgb(252, 211, 77); }
+html.dark .bg-rose-100 { background-color: rgba(244, 63, 94, 0.15); color: rgb(253, 164, 175); }
+html.dark .bg-zinc-100 { background-color: rgba(113, 113, 122, 0.2); color: rgb(212, 212, 216); }
+

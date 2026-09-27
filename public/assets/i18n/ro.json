@@ -1,0 +1,248 @@
+{
+  "common": {
+    "search": "Caută",
+    "refresh": "Reîmprospătează",
+    "cancel": "Anulează",
+    "close": "Închide",
+    "save": "Salvează",
+    "delete": "Șterge",
+    "edit": "Editează",
+    "create": "Creează",
+    "view": "Vezi",
+    "loading": "Se încarcă...",
+    "noData": "Nu există date",
+    "signOut": "Deconectare",
+    "lightMode": "Mod luminos",
+    "darkMode": "Mod întunecat",
+    "welcomeBack": "Bine ai revenit",
+    "profile": "Profil",
+    "settings": "Setări",
+    "notifications": "Notificări",
+    "noNotifications": "Nicio notificare nouă",
+    "language": "Limbă",
+    "all": "Toate",
+    "status": "Status",
+    "category": "Categorie",
+    "date": "Dată",
+    "total": "Total",
+    "name": "Nume",
+    "email": "Email",
+    "role": "Rol",
+    "enable": "Activează"
+  },
+  "nav": {
+    "dashboard": "Panou",
+    "users": "Utilizatori",
+    "products": "Produse",
+    "orders": "Comenzi",
+    "analytics": "Analize",
+    "settings": "Setări"
+  },
+  "dashboard": {
+    "title": "Privire de ansamblu",
+    "subtitle": "Indicatori cheie și activitate recentă",
+    "lastUpdated": "Actualizat chiar acum",
+    "totalRevenue": "Venit total",
+    "activeUsers": "Utilizatori activi",
+    "newSignups": "Înregistrări noi",
+    "conversionRate": "Rată conversie",
+    "vsLastMonth": "vs luna trecută",
+    "revenue": "Venit",
+    "revenueSubtitle": "Ultimele 12 luni (mii $)",
+    "revenueLast12": "Venit — ultimele 12 luni",
+    "usersByRole": "Utilizatori după rol",
+    "rolesDistribution": "Distribuție pe roluri",
+    "recentOrders": "Comenzi recente",
+    "latestTransactions": "Ultimele tranzacții",
+    "viewAll": "Vezi toate",
+    "order": "Comandă",
+    "customer": "Client",
+    "amount": "Sumă"
+  },
+  "users": {
+    "title": "Utilizatori",
+    "totalCount": "{{count}} utilizatori în total",
+    "newUser": "Utilizator nou",
+    "searchPlaceholder": "Caută după nume, email, rol...",
+    "noUsersFound": "Niciun utilizator găsit",
+    "columns": {
+      "name": "Nume",
+      "email": "Email",
+      "role": "Rol",
+      "status": "Status",
+      "created": "Creat"
+    },
+    "dialog": {
+      "createTitle": "Creează utilizator nou",
+      "editTitle": "Editează utilizator",
+      "fullName": "Nume complet",
+      "email": "Email",
+      "role": "Rol",
+      "status": "Status",
+      "createBtn": "Creează utilizator",
+      "saveBtn": "Salvează modificările",
+      "nameRequired": "Numele este obligatoriu",
+      "emailRequired": "Email-ul este obligatoriu",
+      "emailInvalid": "Email invalid"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "manager": "Manager",
+      "user": "Utilizator"
+    },
+    "statuses": {
+      "active": "Activ",
+      "inactive": "Inactiv",
+      "pending": "În așteptare"
+    },
+    "deleteConfirm": {
+      "title": "Ștergi utilizatorul?",
+      "message": "Sigur vrei să ștergi pe {{name}}? Această acțiune este ireversibilă."
+    },
+    "created": "Utilizator creat",
+    "updated": "Utilizator actualizat",
+    "deleted": "Utilizator șters"
+  },
+  "products": {
+    "title": "Produse",
+    "totalCount": "{{count}} produse în catalog",
+    "newProduct": "Produs nou",
+    "searchPlaceholder": "Caută produs, SKU, categorie...",
+    "category": "Categorie",
+    "allCategories": "Toate categoriile",
+    "status": "Status",
+    "allStatuses": "Toate statusurile",
+    "noProducts": "Niciun produs găsit",
+    "tryAdjust": "Încearcă să ajustezi filtrele",
+    "stock": "Stoc:",
+    "units": "bucăți",
+    "statuses": {
+      "published": "Publicat",
+      "draft": "Ciornă",
+      "archived": "Arhivat"
+    }
+  },
+  "orders": {
+    "title": "Comenzi",
+    "totalCount": "{{count}} comenzi în total",
+    "export": "Exportă CSV",
+    "revenuePage": "Venit (pagină)",
+    "pending": "În așteptare",
+    "shipped": "Expediate",
+    "delivered": "Livrate",
+    "searchPlaceholder": "Caută comandă, client, email...",
+    "columns": {
+      "order": "Comandă",
+      "customer": "Client",
+      "items": "Articole",
+      "payment": "Plată",
+      "total": "Total",
+      "status": "Status",
+      "date": "Dată"
+    }
+  },
+  "analytics": {
+    "title": "Analize",
+    "subtitle": "Trafic și vânzări pe ultimele 30 de zile",
+    "visitors": "Vizitatori",
+    "pageviews": "Afișări pagini",
+    "pagesSession": "Pagini / Sesiune",
+    "bounceRate": "Rată de respingere",
+    "vsPrev": "vs anterior",
+    "visitorsPageviews": "Vizitatori & Afișări",
+    "last30": "Ultimele 30 de zile",
+    "trafficSources": "Surse de trafic",
+    "devices": "Dispozitive",
+    "salesByCategory": "Vânzări pe categorie",
+    "topCountries": "Țări principale"
+  },
+  "settings": {
+    "title": "Setări",
+    "subtitle": "Gestionează contul, securitatea și preferințele",
+    "tabs": {
+      "profile": "Profil",
+      "security": "Securitate",
+      "notifications": "Notificări",
+      "appearance": "Aspect"
+    },
+    "profile": {
+      "changePhoto": "Schimbă poza",
+      "photoHint": "PNG sau JPG, max 2MB",
+      "fullName": "Nume complet",
+      "email": "Email",
+      "phone": "Telefon",
+      "timezone": "Fus orar",
+      "language": "Limbă",
+      "bio": "Descriere",
+      "bioPlaceholder": "Spune-ne despre tine...",
+      "cancel": "Anulează",
+      "saveChanges": "Salvează modificările"
+    },
+    "security": {
+      "changePassword": "Schimbă parola",
+      "changeHint": "Folosește o parolă puternică pe care n-o folosești în altă parte.",
+      "currentPassword": "Parola curentă",
+      "newPassword": "Parola nouă",
+      "confirmPassword": "Confirmă parola nouă",
+      "minChars": "Minim 8 caractere",
+      "updatePassword": "Actualizează parola",
+      "twoFactor": "Autentificare în doi pași",
+      "twoFactorHint": "Adaugă un strat suplimentar de securitate contului tău.",
+      "authApp": "Aplicație de autentificare",
+      "notConfigured": "Neconfigurat",
+      "enable": "Activează"
+    },
+    "notifications": {
+      "email": "Notificări pe email",
+      "emailHint": "Alege ce email-uri vrei să primești.",
+      "marketing": "Marketing",
+      "marketingHint": "Sfaturi și oferte speciale",
+      "productUpdates": "Actualizări produs",
+      "productUpdatesHint": "Funcționalități și lansări noi",
+      "security": "Alerte de securitate",
+      "securityHint": "Activitate cont și cereri 2FA",
+      "push": "Notificări push",
+      "pushHint": "Alerte în timp real pe dispozitivele tale.",
+      "desktop": "Desktop",
+      "desktopHint": "Notificări browser",
+      "newOrders": "Comenzi noi",
+      "newOrdersHint": "Sună când apar comenzi",
+      "weeklyDigest": "Rezumat săptămânal",
+      "weeklyDigestHint": "Sumar în fiecare luni",
+      "savePreferences": "Salvează preferințele"
+    },
+    "appearance": {
+      "theme": "Temă",
+      "themeHint": "Alege cum arată Admin Suite.",
+      "light": "Luminos",
+      "dark": "Întunecat"
+    },
+    "savedMessage": "{{name}} salvat cu succes"
+  },
+  "auth": {
+    "appTitle": "Admin Suite",
+    "signInSubtitle": "Autentifică-te în cont",
+    "email": "Email",
+    "password": "Parolă",
+    "emailInvalid": "Introdu un email valid",
+    "emailRequired": "Email-ul este obligatoriu",
+    "passwordRequired": "Parola este obligatorie",
+    "passwordMin": "Minim 6 caractere",
+    "togglePassword": "Comută vizibilitate parolă",
+    "signIn": "Autentifică-te",
+    "demoCreds": "Credențiale demo:"
+  },
+  "confirm": {
+    "cancel": "Anulează",
+    "confirm": "Confirmă"
+  },
+  "placeholder": {
+    "comingSoon": "În curând",
+    "roadmap": "Această secțiune e pe foaia de parcurs. În curând în următoarea iterație."
+  },
+  "layout": {
+    "upgradeTitle": "Upgrade la Pro",
+    "upgradeSubtitle": "Deblochează toate funcționalitățile",
+    "toggleSidebar": "Comută bara laterală"
+  }
+}

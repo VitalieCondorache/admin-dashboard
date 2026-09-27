@@ -1,0 +1,136 @@
+<div class="app-shell">
+  @if (isMobile() && mobileOpen()) {
+    <div
+      class="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden"
+      (click)="closeMobile()"
+      aria-hidden="true"
+    ></div>
+  }
+
+  <aside
+    class="sidebar"
+    [class.sidebar--collapsed]="sidebarCollapsedVisual()"
+    [class.sidebar--mobile]="isMobile()"
+    [class.sidebar--mobile-open]="isMobile() && mobileOpen()"
+  >
+    <div class="sidebar__brand">
+      <div class="sidebar__logo">A</div>
+      @if (!sidebarCollapsedVisual()) {
+        <div class="flex flex-col leading-tight min-w-0">
+          <span class="text-[15px] font-semibold tracking-tight truncate">Admin Suite</span>
+          <span class="text-[11px] opacity-60">v1.0 · demo</span>
+        </div>
+      }
+    </div>
+
+    <nav class="sidebar__nav">
+      @for (item of nav; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="is-active"
+          (click)="closeMobile()"
+          class="nav-item"
+          [class.nav-item--collapsed]="sidebarCollapsedVisual()"
+          [matTooltip]="sidebarCollapsedVisual() ? (item.labelKey | transloco) : ''"
+          matTooltipPosition="right"
+        >
+          <mat-icon class="nav-item__icon">{{ item.icon }}</mat-icon>
+          @if (!sidebarCollapsedVisual()) {
+            <span class="nav-item__label">{{ item.labelKey | transloco }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar__footer">
+      @if (!sidebarCollapsedVisual()) {
+        <div class="upgrade-card">
+          <mat-icon class="!text-xl text-brand-600 shrink-0">rocket_launch</mat-icon>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-semibold">{{ 'layout.upgradeTitle' | transloco }}</p>
+            <p class="text-[11px] opacity-60 truncate">{{ 'layout.upgradeSubtitle' | transloco }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </aside>
+
+  <div class="main-col">
+    <header class="topbar">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        <button mat-icon-button (click)="toggleSidebar()" [attr.aria-label]="'layout.toggleSidebar' | transloco">
+          <mat-icon>{{ isMobile() ? 'menu' : (collapsed() ? 'menu_open' : 'menu') }}</mat-icon>
+        </button>
+        <div class="min-w-0">
+          <p class="text-[11px] uppercase tracking-wider opacity-60 hidden sm:block">{{ 'common.welcomeBack' | transloco }}</p>
+          <h1 class="text-sm sm:text-base font-semibold truncate">{{ auth.user()?.name }}</h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="langMenu"
+          [attr.aria-label]="'common.language' | transloco"
+          [matTooltip]="'common.language' | transloco"
+        >
+          <span class="text-lg">{{ lang.current() === 'ro' ? '🇷🇴' : '🇬🇧' }}</span>
+        </button>
+        <mat-menu #langMenu="matMenu" xPosition="before">
+          @for (l of lang.available; track l.code) {
+            <button mat-menu-item (click)="lang.set(l.code)" [class.!font-semibold]="lang.current() === l.code">
+              <span class="mr-2">{{ l.flag }}</span><span>{{ l.label }}</span>
+              @if (lang.current() === l.code) {
+                <mat-icon class="!ml-auto text-brand-600">check</mat-icon>
+              }
+            </button>
+          }
+        </mat-menu>
+
+        <button
+          mat-icon-button
+          (click)="theme.toggle()"
+          [attr.aria-label]="(theme.theme() === 'dark' ? 'common.lightMode' : 'common.darkMode') | transloco"
+          [matTooltip]="(theme.theme() === 'dark' ? 'common.lightMode' : 'common.darkMode') | transloco"
+        >
+          <mat-icon>{{ theme.theme() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="notifMenu"
+          [attr.aria-label]="'common.notifications' | transloco"
+          [matTooltip]="'common.notifications' | transloco"
+          class="relative"
+        >
+          <mat-icon>notifications</mat-icon>
+          <span class="notif-dot"></span>
+        </button>
+        <mat-menu #notifMenu="matMenu" xPosition="before">
+          <div class="px-4 py-6 text-sm opacity-70 text-center w-64">
+            {{ 'common.noNotifications' | transloco }}
+          </div>
+        </mat-menu>
+
+        <button mat-button [matMenuTriggerFor]="userMenu" class="user-chip">
+          <img [src]="auth.user()?.avatarUrl" alt="" />
+          <span class="hidden md:inline truncate max-w-[140px]">{{ auth.user()?.name }}</span>
+          <mat-icon class="hidden md:inline !text-base !h-5 !w-5 opacity-60">expand_more</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu" xPosition="before">
+          <button mat-menu-item disabled><mat-icon>person</mat-icon><span>{{ 'common.profile' | transloco }}</span></button>
+          <button mat-menu-item routerLink="/settings">
+            <mat-icon>settings</mat-icon><span>{{ 'common.settings' | transloco }}</span>
+          </button>
+          <mat-divider />
+          <button mat-menu-item (click)="auth.logout()">
+            <mat-icon>logout</mat-icon><span>{{ 'common.signOut' | transloco }}</span>
+          </button>
+        </mat-menu>
+      </div>
+    </header>
+
+    <main class="content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

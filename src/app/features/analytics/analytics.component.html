@@ -1,0 +1,97 @@
+<div class="flex flex-col gap-5 sm:gap-6">
+  <div>
+    <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">{{ 'analytics.title' | transloco }}</h2>
+    <p class="text-sm opacity-70">{{ 'analytics.subtitle' | transloco }}</p>
+  </div>
+
+  <!-- Totals -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <div class="card p-5">
+      <div class="flex items-center gap-2 text-xs uppercase tracking-wider opacity-60">
+        <mat-icon class="!text-base !h-4 !w-4">visibility</mat-icon>
+        <span>{{ 'analytics.visitors' | transloco }}</span>
+      </div>
+      <p class="mt-2 text-2xl font-semibold">{{ totals()?.totalVisitors | number }}</p>
+      <p class="mt-1 text-xs text-emerald-600 font-semibold">+8.3% {{ 'analytics.vsPrev' | transloco }}</p>
+    </div>
+    <div class="card p-5">
+      <div class="flex items-center gap-2 text-xs uppercase tracking-wider opacity-60">
+        <mat-icon class="!text-base !h-4 !w-4">description</mat-icon>
+        <span>{{ 'analytics.pageviews' | transloco }}</span>
+      </div>
+      <p class="mt-2 text-2xl font-semibold">{{ totals()?.totalPageviews | number }}</p>
+      <p class="mt-1 text-xs text-emerald-600 font-semibold">+12.1% {{ 'analytics.vsPrev' | transloco }}</p>
+    </div>
+    <div class="card p-5">
+      <div class="flex items-center gap-2 text-xs uppercase tracking-wider opacity-60">
+        <mat-icon class="!text-base !h-4 !w-4">timer</mat-icon>
+        <span>{{ 'analytics.pagesSession' | transloco }}</span>
+      </div>
+      <p class="mt-2 text-2xl font-semibold">{{ totals()?.avgSession }}</p>
+      <p class="mt-1 text-xs text-rose-600 font-semibold">-1.4% {{ 'analytics.vsPrev' | transloco }}</p>
+    </div>
+    <div class="card p-5">
+      <div class="flex items-center gap-2 text-xs uppercase tracking-wider opacity-60">
+        <mat-icon class="!text-base !h-4 !w-4">trending_up</mat-icon>
+        <span>{{ 'analytics.bounceRate' | transloco }}</span>
+      </div>
+      <p class="mt-2 text-2xl font-semibold">38.2%</p>
+      <p class="mt-1 text-xs text-emerald-600 font-semibold">-2.8% {{ 'analytics.vsPrev' | transloco }}</p>
+    </div>
+  </div>
+
+  <!-- Visitors chart -->
+  <div class="card p-5">
+    <div class="mb-4 flex items-center justify-between">
+      <div>
+        <h3 class="text-base font-semibold">{{ 'analytics.visitorsPageviews' | transloco }}</h3>
+        <p class="text-xs opacity-60">{{ 'analytics.last30' | transloco }}</p>
+      </div>
+    </div>
+    <div class="h-64 sm:h-80">
+      <canvas baseChart type="line" [data]="visitorsChart()" [options]="visitorsOptions"></canvas>
+    </div>
+  </div>
+
+  <!-- Row: traffic sources + devices + sales by category -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="card p-5">
+      <h3 class="text-base font-semibold mb-4">{{ 'analytics.trafficSources' | transloco }}</h3>
+      <div class="h-64">
+        <canvas baseChart type="doughnut" [data]="trafficChart()" [options]="doughnutOptions"></canvas>
+      </div>
+    </div>
+    <div class="card p-5">
+      <h3 class="text-base font-semibold mb-4">{{ 'analytics.devices' | transloco }}</h3>
+      <div class="h-64">
+        <canvas baseChart type="doughnut" [data]="deviceChart()" [options]="doughnutOptions"></canvas>
+      </div>
+    </div>
+    <div class="card p-5">
+      <h3 class="text-base font-semibold mb-4">{{ 'analytics.salesByCategory' | transloco }}</h3>
+      <div class="h-64">
+        <canvas baseChart type="bar" [data]="salesChart()" [options]="salesOptions"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top countries -->
+  <div class="card p-5">
+    <h3 class="text-base font-semibold mb-4">{{ 'analytics.topCountries' | transloco }}</h3>
+    <div class="flex flex-col gap-3">
+      @for (c of data()?.topCountries ?? []; track c.code) {
+        <div class="grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3rem_1fr_6rem_4rem] items-center gap-3">
+          <span class="text-xl">{{ c.code === 'US' ? '🇺🇸' : c.code === 'DE' ? '🇩🇪' : c.code === 'RO' ? '🇷🇴' : c.code === 'FR' ? '🇫🇷' : c.code === 'GB' ? '🇬🇧' : '🇪🇸' }}</span>
+          <div class="min-w-0">
+            <p class="text-sm font-medium truncate">{{ c.country }}</p>
+            <div class="mt-1 h-1.5 rounded-full overflow-hidden" style="background: var(--mat-sys-surface-container);">
+              <div class="h-full rounded-full bg-brand-600" [style.width.%]="c.pct"></div>
+            </div>
+          </div>
+          <span class="hidden sm:inline text-sm opacity-70 text-right">{{ c.visitors | number }}</span>
+          <span class="text-sm font-semibold text-right">{{ c.pct }}%</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,191 @@
+<div class="flex flex-col gap-5 sm:gap-6">
+  <div>
+    <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">{{ 'settings.title' | transloco }}</h2>
+    <p class="text-sm opacity-70">{{ 'settings.subtitle' | transloco }}</p>
+  </div>
+
+  <div class="card overflow-hidden">
+    <mat-tab-group dynamicHeight mat-stretch-tabs="false" mat-align-tabs="start">
+      <!-- Profile -->
+      <mat-tab [label]="'settings.tabs.profile' | transloco">
+        <form [formGroup]="profileForm" (ngSubmit)="save('Profile')" class="p-5 sm:p-6 flex flex-col gap-5">
+          <div class="flex items-center gap-4">
+            <img [src]="auth.user()?.avatarUrl" alt="" class="h-20 w-20 rounded-full object-cover ring-2 ring-brand-500/30" />
+            <div class="flex flex-col gap-2">
+              <button mat-flat-button color="primary" type="button">
+                <mat-icon>upload</mat-icon><span>{{ 'settings.profile.changePhoto' | transloco }}</span>
+              </button>
+              <p class="text-xs opacity-60">{{ 'settings.profile.photoHint' | transloco }}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'settings.profile.fullName' | transloco }}</mat-label>
+              <input matInput formControlName="name" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'settings.profile.email' | transloco }}</mat-label>
+              <input matInput type="email" formControlName="email" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'settings.profile.phone' | transloco }}</mat-label>
+              <input matInput formControlName="phone" placeholder="+40 ..." />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'settings.profile.timezone' | transloco }}</mat-label>
+              <mat-select formControlName="timezone">
+                @for (t of timezones; track t) {
+                  <mat-option [value]="t">{{ t }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="md:col-span-2">
+              <mat-label>{{ 'settings.profile.language' | transloco }}</mat-label>
+              <mat-select formControlName="language">
+                @for (l of languages; track l.code) {
+                  <mat-option [value]="l.code">{{ l.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="md:col-span-2">
+              <mat-label>{{ 'settings.profile.bio' | transloco }}</mat-label>
+              <textarea matInput rows="3" formControlName="bio" [placeholder]="'settings.profile.bioPlaceholder' | transloco"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="flex justify-end gap-2 pt-2">
+            <button mat-stroked-button type="button">{{ 'settings.profile.cancel' | transloco }}</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="profileForm.invalid">
+              {{ 'settings.profile.saveChanges' | transloco }}
+            </button>
+          </div>
+        </form>
+      </mat-tab>
+
+      <!-- Security -->
+      <mat-tab [label]="'settings.tabs.security' | transloco">
+        <form [formGroup]="passwordForm" (ngSubmit)="save('Password')" class="p-5 sm:p-6 flex flex-col gap-5 max-w-xl">
+          <div>
+            <h3 class="text-base font-semibold">{{ 'settings.security.changePassword' | transloco }}</h3>
+            <p class="text-sm opacity-60">{{ 'settings.security.changeHint' | transloco }}</p>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'settings.security.currentPassword' | transloco }}</mat-label>
+            <input matInput type="password" formControlName="current" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'settings.security.newPassword' | transloco }}</mat-label>
+            <input matInput type="password" formControlName="next" />
+            @if (passwordForm.controls.next.hasError('minlength')) {
+              <mat-error>{{ 'settings.security.minChars' | transloco }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'settings.security.confirmPassword' | transloco }}</mat-label>
+            <input matInput type="password" formControlName="confirm" />
+          </mat-form-field>
+          <div class="flex justify-end">
+            <button mat-flat-button color="primary" type="submit" [disabled]="passwordForm.invalid">
+              {{ 'settings.security.updatePassword' | transloco }}
+            </button>
+          </div>
+
+          <hr class="my-2" style="border-color: var(--mat-sys-outline-variant);" />
+
+          <div>
+            <h3 class="text-base font-semibold">{{ 'settings.security.twoFactor' | transloco }}</h3>
+            <p class="text-sm opacity-60">{{ 'settings.security.twoFactorHint' | transloco }}</p>
+            <div class="mt-3 flex items-center justify-between card p-4">
+              <div class="flex items-center gap-3">
+                <mat-icon class="text-brand-600">shield</mat-icon>
+                <div>
+                  <p class="text-sm font-medium">{{ 'settings.security.authApp' | transloco }}</p>
+                  <p class="text-xs opacity-60">{{ 'settings.security.notConfigured' | transloco }}</p>
+                </div>
+              </div>
+              <button mat-stroked-button type="button">{{ 'settings.security.enable' | transloco }}</button>
+            </div>
+          </div>
+        </form>
+      </mat-tab>
+
+      <!-- Notifications -->
+      <mat-tab [label]="'settings.tabs.notifications' | transloco">
+        <form [formGroup]="notifyForm" (ngSubmit)="save('Notifications')" class="p-5 sm:p-6 flex flex-col gap-4">
+          <div>
+            <h3 class="text-base font-semibold">{{ 'settings.notifications.email' | transloco }}</h3>
+            <p class="text-sm opacity-60">{{ 'settings.notifications.emailHint' | transloco }}</p>
+          </div>
+          <div class="flex flex-col divide-y" style="border-color: var(--mat-sys-outline-variant);">
+            <label class="flex items-center justify-between py-3">
+              <div><p class="text-sm font-medium">{{ 'settings.notifications.marketing' | transloco }}</p><p class="text-xs opacity-60">{{ 'settings.notifications.marketingHint' | transloco }}</p></div>
+              <mat-slide-toggle formControlName="emailMarketing" />
+            </label>
+            <label class="flex items-center justify-between py-3">
+              <div><p class="text-sm font-medium">{{ 'settings.notifications.productUpdates' | transloco }}</p><p class="text-xs opacity-60">{{ 'settings.notifications.productUpdatesHint' | transloco }}</p></div>
+              <mat-slide-toggle formControlName="emailProduct" />
+            </label>
+            <label class="flex items-center justify-between py-3">
+              <div><p class="text-sm font-medium">{{ 'settings.notifications.security' | transloco }}</p><p class="text-xs opacity-60">{{ 'settings.notifications.securityHint' | transloco }}</p></div>
+              <mat-slide-toggle formControlName="emailSecurity" />
+            </label>
+          </div>
+
+          <div class="mt-2">
+            <h3 class="text-base font-semibold">{{ 'settings.notifications.push' | transloco }}</h3>
+            <p class="text-sm opacity-60">{{ 'settings.notifications.pushHint' | transloco }}</p>
+          </div>
+          <div class="flex flex-col divide-y" style="border-color: var(--mat-sys-outline-variant);">
+            <label class="flex items-center justify-between py-3">
+              <div><p class="text-sm font-medium">{{ 'settings.notifications.desktop' | transloco }}</p><p class="text-xs opacity-60">{{ 'settings.notifications.desktopHint' | transloco }}</p></div>
+              <mat-slide-toggle formControlName="pushDesktop" />
+            </label>
+            <label class="flex items-center justify-between py-3">
+              <div><p class="text-sm font-medium">{{ 'settings.notifications.newOrders' | transloco }}</p><p class="text-xs opacity-60">{{ 'settings.notifications.newOrdersHint' | transloco }}</p></div>
+              <mat-slide-toggle formControlName="pushOrders" />
+            </label>
+            <label class="flex items-center justify-between py-3">
+              <div><p class="text-sm font-medium">{{ 'settings.notifications.weeklyDigest' | transloco }}</p><p class="text-xs opacity-60">{{ 'settings.notifications.weeklyDigestHint' | transloco }}</p></div>
+              <mat-slide-toggle formControlName="weeklyDigest" />
+            </label>
+          </div>
+
+          <div class="flex justify-end">
+            <button mat-flat-button color="primary" type="submit">{{ 'settings.notifications.savePreferences' | transloco }}</button>
+          </div>
+        </form>
+      </mat-tab>
+
+      <!-- Appearance -->
+      <mat-tab [label]="'settings.tabs.appearance' | transloco">
+        <div class="p-5 sm:p-6 flex flex-col gap-5">
+          <div>
+            <h3 class="text-base font-semibold">{{ 'settings.appearance.theme' | transloco }}</h3>
+            <p class="text-sm opacity-60">{{ 'settings.appearance.themeHint' | transloco }}</p>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-xl">
+            <button
+              (click)="theme.theme.set('light')"
+              class="card p-4 text-left transition"
+              [class.ring-2]="theme.theme() === 'light'"
+              [class.ring-brand-500]="theme.theme() === 'light'"
+            >
+              <div class="mb-3 h-20 rounded-lg bg-gradient-to-br from-zinc-100 to-white border"></div>
+              <p class="text-sm font-medium">{{ 'settings.appearance.light' | transloco }}</p>
+            </button>
+            <button
+              (click)="theme.theme.set('dark')"
+              class="card p-4 text-left transition"
+              [class.ring-2]="theme.theme() === 'dark'"
+              [class.ring-brand-500]="theme.theme() === 'dark'"
+            >
+              <div class="mb-3 h-20 rounded-lg bg-gradient-to-br from-zinc-800 to-zinc-950 border"></div>
+              <p class="text-sm font-medium">{{ 'settings.appearance.dark' | transloco }}</p>
+            </button>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -1,0 +1,122 @@
+<div class="flex flex-col gap-5 sm:gap-6">
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">{{ 'users.title' | transloco }}</h2>
+      <p class="text-sm opacity-70">{{ 'users.totalCount' | transloco: { count: store.total() } }}</p>
+    </div>
+    <button mat-flat-button color="primary" class="!h-11" (click)="openCreate()">
+      <mat-icon>add</mat-icon>
+      <span>{{ 'users.newUser' | transloco }}</span>
+    </button>
+  </div>
+
+  <div class="card overflow-hidden">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-4 border-b" style="border-color: var(--mat-sys-outline-variant);">
+      <mat-form-field appearance="outline" class="flex-1 sm:max-w-md" subscriptSizing="dynamic">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput [formControl]="search" [placeholder]="'users.searchPlaceholder' | transloco" />
+      </mat-form-field>
+      <button mat-stroked-button (click)="store.refresh()" class="!h-12 shrink-0">
+        <mat-icon>refresh</mat-icon>
+        <span>{{ 'common.refresh' | transloco }}</span>
+      </button>
+    </div>
+
+    @if (store.loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+
+    <div class="overflow-x-auto">
+      <table
+        mat-table
+        [dataSource]="store.items()"
+        matSort
+        (matSortChange)="onSort($event)"
+        class="w-full"
+      >
+        <ng-container matColumnDef="avatar">
+          <th mat-header-cell *matHeaderCellDef class="!w-14"></th>
+          <td mat-cell *matCellDef="let u">
+            <img [src]="u.avatarUrl" alt="" class="h-9 w-9 rounded-full object-cover" loading="lazy" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'users.columns.name' | transloco }}</th>
+          <td mat-cell *matCellDef="let u" class="font-semibold whitespace-nowrap">{{ u.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'users.columns.email' | transloco }}</th>
+          <td mat-cell *matCellDef="let u" class="opacity-80 whitespace-nowrap">{{ u.email }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef>{{ 'users.columns.role' | transloco }}</th>
+          <td mat-cell *matCellDef="let u">
+            <span class="inline-flex items-center rounded-md bg-brand-50 dark:bg-brand-900/40 px-2 py-0.5 text-xs font-semibold text-brand-700 dark:text-brand-300 capitalize">
+              {{ 'users.roles.' + u.role | transloco }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>{{ 'users.columns.status' | transloco }}</th>
+          <td mat-cell *matCellDef="let u">
+            <span class="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold capitalize" [ngClass]="badgeClass(u.status)">
+              <span class="h-1.5 w-1.5 rounded-full" [class.bg-emerald-500]="u.status==='active'" [class.bg-amber-500]="u.status==='pending'" [class.bg-zinc-400]="u.status==='inactive'"></span>
+              {{ 'users.statuses.' + u.status | transloco }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'users.columns.created' | transloco }}</th>
+          <td mat-cell *matCellDef="let u" class="opacity-70 whitespace-nowrap">{{ u.createdAt | date: 'mediumDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="!w-14"></th>
+          <td mat-cell *matCellDef="let u">
+            <button mat-icon-button [matMenuTriggerFor]="rowMenu" [matMenuTriggerData]="{ user: u }">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayed"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td [attr.colspan]="displayed.length" class="p-10 text-center">
+            <div class="flex flex-col items-center gap-2 opacity-60">
+              <mat-icon class="!text-4xl !h-10 !w-10">inbox</mat-icon>
+              <p class="text-sm">{{ 'users.noUsersFound' | transloco }}</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [length]="store.total()"
+      [pageSize]="store.query().pageSize"
+      [pageIndex]="store.query().page"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      (page)="onPage($event)"
+      showFirstLastButtons
+    />
+  </div>
+
+  <mat-menu #rowMenu="matMenu" xPosition="before">
+    <ng-template matMenuContent let-user="user">
+      <button mat-menu-item (click)="openEdit(user)">
+        <mat-icon>edit</mat-icon><span>{{ 'common.edit' | transloco }}</span>
+      </button>
+      <mat-divider />
+      <button mat-menu-item class="!text-rose-600" (click)="confirmDelete(user)">
+        <mat-icon class="!text-rose-600">delete</mat-icon><span>{{ 'common.delete' | transloco }}</span>
+      </button>
+    </ng-template>
+  </mat-menu>
+</div>

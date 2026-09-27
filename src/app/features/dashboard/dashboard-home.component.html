@@ -1,0 +1,122 @@
+<div class="flex flex-col gap-5 sm:gap-6">
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">{{ 'dashboard.title' | transloco }}</h2>
+      <p class="text-sm opacity-70">{{ 'dashboard.subtitle' | transloco }}</p>
+    </div>
+    <div class="hidden sm:flex items-center gap-2 text-xs opacity-70">
+      <mat-icon class="!text-base !h-4 !w-4">schedule</mat-icon>
+      <span>{{ 'dashboard.lastUpdated' | transloco }}</span>
+    </div>
+  </div>
+
+  <!-- KPI cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    @for (kpi of kpis(); track kpi.labelKey) {
+      <div class="card card--hover p-5">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-xs font-medium uppercase tracking-wider opacity-60">{{ kpi.labelKey | transloco }}</p>
+            <p class="mt-2 text-2xl font-semibold tracking-tight truncate">{{ kpi.value }}</p>
+          </div>
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl shrink-0"
+               [style.background]="'rgba(51, 102, 255, 0.1)'">
+            <mat-icon class="text-brand-600">{{ kpi.icon }}</mat-icon>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center gap-1.5 text-sm">
+          <span
+            class="inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-xs font-semibold"
+            [class.bg-emerald-100]="kpi.delta >= 0"
+            [class.text-emerald-700]="kpi.delta >= 0"
+            [class.bg-rose-100]="kpi.delta < 0"
+            [class.text-rose-700]="kpi.delta < 0"
+          >
+            <mat-icon class="!h-3.5 !w-3.5 !text-sm">
+              {{ kpi.delta >= 0 ? 'arrow_upward' : 'arrow_downward' }}
+            </mat-icon>
+            {{ kpi.delta > 0 ? '+' : '' }}{{ kpi.delta }}%
+          </span>
+          <span class="text-xs opacity-60">{{ 'dashboard.vsLastMonth' | transloco }}</span>
+        </div>
+      </div>
+    } @empty {
+      @for (_ of [1,2,3,4]; track $index) {
+        <div class="h-32 animate-pulse rounded-2xl" style="background: var(--mat-sys-surface-container);"></div>
+      }
+    }
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="card p-5 lg:col-span-2">
+      <div class="mb-4 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-semibold">{{ 'dashboard.revenue' | transloco }}</h3>
+          <p class="text-xs opacity-60">{{ 'dashboard.revenueSubtitle' | transloco }}</p>
+        </div>
+        <div class="flex gap-1 rounded-lg p-1" style="background: var(--mat-sys-surface-container);">
+          <button class="px-2.5 py-1 text-xs rounded font-medium" style="background: var(--mat-sys-surface);">12M</button>
+          <button class="px-2.5 py-1 text-xs rounded font-medium opacity-60">6M</button>
+          <button class="px-2.5 py-1 text-xs rounded font-medium opacity-60">30D</button>
+        </div>
+      </div>
+      <div class="h-64 sm:h-72">
+        <canvas baseChart type="line" [data]="revenueChart()" [options]="revenueOptions"></canvas>
+      </div>
+    </div>
+
+    <div class="card p-5">
+      <h3 class="text-base font-semibold">{{ 'dashboard.usersByRole' | transloco }}</h3>
+      <p class="text-xs opacity-60 mb-4">{{ 'dashboard.rolesDistribution' | transloco }}</p>
+      <div class="h-64 sm:h-72">
+        <canvas baseChart type="doughnut" [data]="rolesChart()" [options]="rolesOptions"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent orders -->
+  <div class="card p-5">
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+      <div>
+        <h3 class="text-base font-semibold">{{ 'dashboard.recentOrders' | transloco }}</h3>
+        <p class="text-xs opacity-60">{{ 'dashboard.latestTransactions' | transloco }}</p>
+      </div>
+      <a class="text-sm text-brand-600 font-medium hover:underline" routerLink="/orders">{{ 'dashboard.viewAll' | transloco }} →</a>
+    </div>
+    <div class="overflow-x-auto -mx-5">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-xs uppercase tracking-wider opacity-60 border-b" style="border-color: var(--mat-sys-outline-variant);">
+            <th class="py-3 px-5 font-medium">{{ 'dashboard.order' | transloco }}</th>
+            <th class="py-3 px-5 font-medium">{{ 'dashboard.customer' | transloco }}</th>
+            <th class="py-3 px-5 font-medium text-right">{{ 'dashboard.amount' | transloco }}</th>
+            <th class="py-3 px-5 font-medium">{{ 'common.status' | transloco }}</th>
+            <th class="py-3 px-5 font-medium">{{ 'common.date' | transloco }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (o of stats()?.recentOrders ?? []; track o.id) {
+            <tr class="border-b last:border-0 hover:bg-black/[0.02] dark:hover:bg-white/[0.03]" style="border-color: var(--mat-sys-outline-variant);">
+              <td class="py-3 px-5 font-semibold">{{ o.id }}</td>
+              <td class="py-3 px-5">{{ o.customer }}</td>
+              <td class="py-3 px-5 text-right font-medium">${{ o.amount }}</td>
+              <td class="py-3 px-5">
+                <span
+                  class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium capitalize"
+                  [class.bg-emerald-100]="o.status === 'paid'"
+                  [class.text-emerald-700]="o.status === 'paid'"
+                  [class.bg-amber-100]="o.status === 'pending'"
+                  [class.text-amber-700]="o.status === 'pending'"
+                >
+                  {{ o.status }}
+                </span>
+              </td>
+              <td class="py-3 px-5 opacity-70 whitespace-nowrap">{{ o.date | date: 'short' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

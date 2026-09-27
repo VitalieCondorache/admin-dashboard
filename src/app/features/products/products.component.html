@@ -1,0 +1,107 @@
+<div class="flex flex-col gap-5 sm:gap-6">
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h2 class="text-xl sm:text-2xl font-semibold tracking-tight">{{ 'products.title' | transloco }}</h2>
+      <p class="text-sm opacity-70">{{ 'products.totalCount' | transloco: { count: total() } }}</p>
+    </div>
+    <button mat-flat-button color="primary" class="!h-11">
+      <mat-icon>add</mat-icon><span>{{ 'products.newProduct' | transloco }}</span>
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="card p-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="lg:col-span-2">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput [formControl]="search" [placeholder]="'products.searchPlaceholder' | transloco" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>{{ 'products.category' | transloco }}</mat-label>
+        <mat-select [formControl]="category">
+          <mat-option value="">{{ 'products.allCategories' | transloco }}</mat-option>
+          @for (c of categories; track c) {
+            <mat-option [value]="c">{{ c }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>{{ 'products.status' | transloco }}</mat-label>
+        <mat-select [formControl]="status">
+          <mat-option value="">{{ 'products.allStatuses' | transloco }}</mat-option>
+          @for (s of statuses; track s) {
+            <mat-option [value]="s" class="capitalize">{{ 'products.statuses.' + s | transloco }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  @if (loading() && items().length === 0) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      @for (_ of [1,2,3,4,5,6,7,8]; track $index) {
+        <div class="card h-72 animate-pulse"></div>
+      }
+    </div>
+  } @else if (items().length === 0) {
+    <div class="card p-12 flex flex-col items-center text-center opacity-70">
+      <mat-icon class="!text-5xl !h-12 !w-12 mb-2">inventory_2</mat-icon>
+      <p class="text-base font-medium">{{ 'products.noProducts' | transloco }}</p>
+      <p class="text-sm">{{ 'products.tryAdjust' | transloco }}</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      @for (p of items(); track p.id) {
+        <article class="card card--hover overflow-hidden flex flex-col">
+          <div class="relative aspect-[4/3] overflow-hidden" style="background: var(--mat-sys-surface-container);">
+            <img [src]="p.imageUrl" [alt]="p.name" class="h-full w-full object-cover" loading="lazy" />
+            <span class="absolute top-2 left-2 inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold capitalize"
+                  [ngClass]="statusClass(p.status)">
+              {{ 'products.statuses.' + p.status | transloco }}
+            </span>
+            <button mat-icon-button class="!absolute !top-1 !right-1 !bg-white/90 !text-black" [matMenuTriggerFor]="rowMenu" [matMenuTriggerData]="{ product: p }">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+          <div class="p-4 flex-1 flex flex-col gap-2">
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="text-sm font-semibold leading-tight line-clamp-2">{{ p.name }}</h3>
+            </div>
+            <p class="text-xs opacity-60">{{ p.category }} · {{ p.sku }}</p>
+            <div class="mt-auto flex items-center justify-between pt-2">
+              <span class="text-lg font-semibold">${{ p.price }}</span>
+              <div class="flex items-center gap-1 text-xs">
+                <mat-icon class="!text-base !h-4 !w-4 text-amber-500">star</mat-icon>
+                <span class="font-medium">{{ p.rating }}</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between text-xs border-t pt-2" style="border-color: var(--mat-sys-outline-variant);">
+              <span class="opacity-60">{{ 'products.stock' | transloco }}</span>
+              <span class="font-semibold" [ngClass]="stockColor(p.stock)">{{ p.stock }} {{ 'products.units' | transloco }}</span>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+
+    <mat-paginator
+      [length]="total()"
+      [pageSize]="pageSize()"
+      [pageIndex]="page()"
+      [pageSizeOptions]="[12, 24, 48]"
+      (page)="onPage($event)"
+      class="card"
+    />
+  }
+</div>
+
+<mat-menu #rowMenu="matMenu" xPosition="before">
+  <ng-template matMenuContent let-product="product">
+    <button mat-menu-item><mat-icon>visibility</mat-icon><span>{{ 'common.view' | transloco }}</span></button>
+    <button mat-menu-item><mat-icon>edit</mat-icon><span>{{ 'common.edit' | transloco }}</span></button>
+    <button mat-menu-item class="!text-rose-600" (click)="remove(product)">
+      <mat-icon class="!text-rose-600">delete</mat-icon><span>{{ 'common.delete' | transloco }}</span>
+    </button>
+  </ng-template>
+</mat-menu>
