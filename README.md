@@ -11,6 +11,25 @@ Angular 21 admin dashboard — standalone components, signals, zoneless change d
 ![NgRx Signals](https://img.shields.io/badge/NgRx-SignalStore-BA2BD2?logo=ngrx&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+## Screenshots
+
+![Dashboard overview — light theme](docs/screenshots/dashboard-light.webp)
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/dashboard-dark.webp" alt="Dashboard in dark theme"><br><em>Dashboard — dark theme</em></td>
+    <td width="50%"><img src="docs/screenshots/users.webp" alt="Users table with search, sorting and pagination"><br><em>Users — paginated, sortable CRUD table backed by the Signal Store</em></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/products.webp" alt="Product grid with category and status filters"><br><em>Products — filterable grid (search, category, status)</em></td>
+    <td width="50%"><img src="docs/screenshots/orders.webp" alt="Orders table with summary cards, search and status filter"><br><em>Orders — summary cards plus debounced search and status filter</em></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/analytics.webp" alt="Analytics page with multi-series chart"><br><em>Analytics — multi-series traffic chart</em></td>
+    <td width="50%"><img src="docs/screenshots/settings.webp" alt="Settings page with tabbed forms"><br><em>Settings — profile / security / notifications / appearance</em></td>
+  </tr>
+</table>
+
 ## Highlights
 
 - **Modern Angular** — standalone components, signals, `inject()`, functional guards & interceptors, zoneless-ready.
